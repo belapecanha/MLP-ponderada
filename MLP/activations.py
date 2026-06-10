@@ -15,5 +15,5 @@ def sigmoid_deriv(z):
     return s * (1 - s)
 
 def softmax(z):
-    e = np.exp(z)
+    e = np.exp(z - np.max(z, axis=1, keepdims=True))
     return e / np.sum(e, axis=1, keepdims=True)

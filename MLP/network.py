@@ -1,6 +1,7 @@
 import numpy as np
 from .activations import relu, relu_deriv, sigmoid, sigmoid_deriv, softmax
 from .losses import cross_entropy
+from .optimizers import sgd
 
 
 class MLP:
@@ -55,6 +56,5 @@ class MLP:
             dA = dZ @ self.params[f'W{i}'].T
 
     def update(self, lr):
-        for i in range(self.num_layers):
-            self.params[f'W{i}'] -= lr * self.grads[f'dW{i}']
-            self.params[f'b{i}'] -= lr * self.grads[f'db{i}']
+        matched_grads = {k: self.grads[f'd{k}'] for k in self.params}
+        sgd(self.params, matched_grads, lr)
