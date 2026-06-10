@@ -1,1 +1,1 @@
-from mlp.network import MLP
+from .network import MLP
