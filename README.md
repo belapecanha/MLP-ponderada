@@ -9,6 +9,7 @@ A rede é organizada em módulos separados (`MLP/activations.py`, `losses.py`, `
 ## Como Rodar
 
 ```bash
+pip install -r requirements.txt
 jupyter notebook notebook/experimentacao.ipynb
 ```
 
@@ -80,10 +81,10 @@ jupyter notebook notebook/experimentacao.ipynb
 
 | Config | Arquitetura | Ativação | lr | Acurácia (40 épocas) |
 |---|---|---|---|---|
-| A | [784, 64, 32, 10] | ReLU | 0.1 | **97.56%** |
-| B | [784, 64, 32, 10] | Sigmoid | 0.1 | 94.81% |
-| C | [784, 64, 32, 10] | ReLU | 0.01 | 94.69% |
-| D | [784, 64, 32, 10] | ReLU | 0.5 | 97.57% |
+| A | [784, 64, 32, 10] | ReLU | 0.1 | **96.73%** |
+| B | [784, 64, 32, 10] | Sigmoid | 0.1 | 92.70% |
+| C | [784, 64, 32, 10] | ReLU | 0.01 | 93.43% |
+| D | [784, 64, 32, 10] | ReLU | 0.5 | 96.85% |
 
 ### Curvas de Treinamento
 
@@ -113,7 +114,7 @@ Apesar da Config D ter chegado a uma acurácia muito próxima da Config A, a Con
 
 1. **Curva mais estável:** a loss da Config A desce sem grandes oscilações. Isso indica que o modelo está aprendendo de forma consistente.
 
-2. **Interpretabilidade do treino:** com Config A é mais fácil diagnosticar problemas: se a loss parar de cair, sabemos que não é culpa do lr alto. Com Config D, qualquer anomalia na curva tem ambiguidade, por exemplo, ela tem um pico de loss grande em 15 épocas e logo depois já volta ao normal rapidamente.
+2. **Interpretabilidade do treino:** com Config A é mais fácil diagnosticar problemas: se a loss parar de cair, sabemos que não é culpa do lr alto. Com Config D, qualquer anomalia na curva tem ambiguidade.
 
 ### Matriz de Confusão — Config A (melhor modelo)
 
@@ -146,4 +147,28 @@ Além disso, no início tentei treinar com todos os 60k exemplos do MNIST, o que
 
 Se fosse refazer do zero, separaria o conjunto de validação do conjunto de teste desde o início. No projeto atual, o X_test (10k exemplos) é usado tanto para monitorar o treino época por época quanto para a avaliação final do modelo. O correto seria separar treino e validação, e manter os 10k de teste completamente intocados até a avaliação final. Assim a acurácia reportada seria uma estimativa honesta de como o modelo se comporta em dados que nunca influenciaram nenhuma decisão.
 
+---
+
+## Estrutura do Repositório
+
+```
+.
+├── README.md
+├── requirements.txt
+├── MLP/
+│   ├── __init__.py
+│   ├── network.py       ← MLP: forward, backward, update
+│   ├── activations.py   ← ReLU, Sigmoid, Softmax e derivadas
+│   ├── losses.py        ← Cross-entropy
+│   └── optimizers.py    ← SGD
+├── notebook/
+│   └── experimentacao.ipynb
+└── resultados/
+    ├── config_a_curvas.png
+    ├── config_b_curvas.png
+    ├── config_c_curvas.png
+    ├── config_d_curvas.png
+    ├── comparativo_configs.png
+    └── matriz_confusao.png
+```
 

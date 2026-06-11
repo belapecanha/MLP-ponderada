@@ -12,11 +12,13 @@ class MLP:
         for i in range(self.num_layers):
             n_in  = layer_sizes[i]
             n_out = layer_sizes[i + 1]
+            # He: escala por sqrt(2/n_in) para manter variância estável camada a camada com ReLU
             self.params[f'W{i}'] = np.random.randn(n_in, n_out) * np.sqrt(2.0 / n_in)
             self.params[f'b{i}'] = np.zeros((1, n_out))
 
     def forward(self, X):
-        self.cache = {'A0': X}  
+        # cache guarda Z e A de cada camada o backward vai usar esses valores depois
+        self.cache = {'A0': X}
         for i in range(self.num_layers):
             A_prev = self.cache[f'A{i}']
             Z = A_prev @ self.params[f'W{i}'] + self.params[f'b{i}']
